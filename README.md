@@ -1,5 +1,14 @@
-# project_n1q3h_r6b5u_z0i7y
+# Database-Full-Stack-Project
 
-Citation: The source code that this software is built upon is from the CPSC 304 TAs. 
+Database class full stack project using Javascript, Node, Express, HTML, CSS, Oracle Sqlplus. 
 
-No Extra Information 
+Queries used: insert, delete, join, nested aggregation, projection, division 
+
+All tables are normalized to 3NF to avoid redundacies. 
+
+Inputs are sanitized before querying the database. 
+
+*Database is stored in UBC's remote oracle server, please change to your own sever and run start on sql file to initialize the tables. 
+*Node environment is setup on remote server. To run the code, please set up our own local environment. 
+
+Credits: Thank you for help from CPSC304 TA, Yasuto, Preston San 
