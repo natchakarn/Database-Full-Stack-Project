@@ -1,0 +1,381 @@
+<!-- Citation: the source code is from the CPSC 304 TA-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <!-- This meta tag ensures that the website renders correctly across different device sizes, enhancing mobile responsiveness. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Car Manufacturing Company Database Software</title>
+</head>
+<body>
+    <h1>Car Manufacturing Company Database Software</h1>
+    <!-- ===================================================================================== -->
+    <!-- Display the current status of the database connection. 
+         !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
+         -->
+    <h1>Database Connection Status: 
+        <!-- An in-line placeholder to display connection status. -->
+        <span id="dbStatus"> </span>
+        <!-- A loading GIF, will be hided once get the status. -->
+        <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
+    </h1>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!-- We start our code here (keep above for reference will delete later-->
+
+    <!-- Show 'Material Table' that we are going to insert into.
+    Data will be fetched and inserted here dynamically using JavaScript. -->
+    <!-- INSERT QUERY -->
+    <h2>Input Information Into Material Table</h2>
+    <p>Material Table</p>
+    <table id="materialtable" >
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Material_ID</th>
+            <th>Material Name</th>
+            <th>Amount Sent from Supplier</th>
+            <th>Amount Sent to Factory</th>
+            <th>Supplier Name</th>
+            <th>Factory ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p>Type in the values to insert into materials table:</p>
+    <form id="insertMaterialsTable">
+        Material ID: <input type="number" id="material_ID" placeholder="Enter Material ID" required> <br><br>
+        Material Name: <input type="text" id="material_name" placeholder="Enter Material Name"> <br><br>
+        Amount Sent from Supplier: <input type="number" id="provides_amount" placeholder="Enter Amount Sent from Supplier" required> <br><br>
+        Amount Sent to Factory: <input type="number" id="sendsTo_amount" placeholder="Enter Amount Sent to Factory" > <br><br>
+        Supplier Name: <input type="text" id="supplier_name" placeholder="Enter Supplier Name" required> <br><br>
+        Factory ID: <input type="number" id="factory_ID" placeholder="Enter Factory ID" required> <br><br>
+        <button type="submit"> Insert </button> <br>
+    </form>
+    <div id="insertMaterialsResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <!-- DELETE QUERY -->
+    <h2>Delete Factory Information</h2>
+    <p>Factory Table</p>
+    <table id="factoryTable">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Factory ID</th>
+            <th>Factory City</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p>Note: if you look at the material table above, it will be updated too! (because of cascade deletion)</p>
+    <p>Please enter which factory you want to delete. </p>
+    <form id="deleteFactory">
+        Factory ID: <input type="number" id="delete_factory_ID" placeholder="Enter Factory ID" required> <br><br>
+        <button type="submit"> Delete </button> <br>
+    </form>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <div id="deleteResultMsg"></div>
+
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <!-- UPDATE QUERY -->
+    <h2>Update Truck Information</h2>
+    <p>Truck table</p>
+    <table id="truckTable">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Model Name</th>
+            <th>Weight Capacity</th>
+            <th>Carbon Emission</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
+    <form id="updateTruckInformation">
+        <p>Enter the truck model you would like to update.</p>
+        Model Name: <input type="text" id="model_name" placeholder="Enter model name" required> <br><br>
+        <p>Please enter the value(s) you would like to update.</p>
+        Weight Capacity: <input type="number" id="weight_capacity" placeholder="Enter new weight capacity" > <br><br>
+        Carbon Emission: <input type="number" id="carbon_emission" placeholder="Enter new carbon emission" > <br><br>
+        Price: <input type="number" id="price" placeholder="Enter new price" > <br><br>
+
+        <button type="submit"> update </button> <br>
+    </form>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <div id="updateTruckResultMsg"></div>
+
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <!-- SELECTION QUERY -->
+    <h2>Find license plate(s) based on filter(s)</h2>
+    <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
+    <form id="selection">
+        <p>Please enter the filter(s) or leave it blank if you don't want specific filters to apply.</p>
+        Worker ID: <input type="number" id="worker_ID" placeholder="Enter Worker ID" > <br>
+        <p>and</p>
+        Machine ID: <input type="number" id="machine_ID" placeholder="Enter Machine ID" > <br>
+        <p>and</p>
+        Business ID: <input type="number" id="business_ID" placeholder="Enter Business ID" > <br>
+        <button type="submit"> Find </button> <br>
+    </form>
+    <div id="selectResultMsg"></div> <br>
+    <p>Results:</p>
+    <table id="selectTable" >
+        <thead>
+        <tr>
+            <th>License Plate</th>
+            <th>Worker ID</th>
+            <th>Machine ID</th>
+            <th>Business ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <!-- PROJECTION query-->
+    <h2>Find Table Column Information</h2>
+    <form id="attribute">
+        Select a table first and then available columns will be displayed. Please separate the column names by commas ie. attr1,attr2,attr3 (without spaces) <br><br>
+        Table: <select name="tables" id="tableChoice"></select> <br><br>
+        Column List: <input type="text" id="attr" placeholder="Enter Columns" required> <br><br>
+        <p>The possible columns are: </p>
+        <div id="possibleAttr"></div>
+        <button type="submit"> Find </button> <br>
+    </form>
+
+    <p>Column Information: </p>
+    <table id="projection" class = "display">
+        <tbody id = findTableBody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <!-- Aggregation with GROUP BY query-->
+    <h2>Get average price of Sedan for each passenger capacity category. </h2>
+    <p> The sedans we have: </p>
+    <table id="sedanTable">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Color</th>
+            <th>Model Name</th>
+            <th>Price</th>
+            <th>Passenger Capacity</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p></p>
+    <button id="avgPriceButton"> Get </button> <br><br>
+    <!-- A placeholder to display the count result. -->
+    <p>Results: </p>
+    <table id="avgtable">
+        <thead>
+        <th>
+            Passenger Capacity
+        </th>
+        <th>
+            Price
+        </th>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <!-- aggregation by HAVING query -->
+    <h2>For each sedan with more than one color, find the minimum price in each color category. </h2>
+    <p> The sedans we have: </p>
+    <table id="sedanTable2">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Color</th>
+            <th>Model Name</th>
+            <th>Price</th>
+            <th>Passenger Capacity</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <button id="minColor"> Find </button> <br><br>
+    <!-- A placeholder to display the count result. -->
+    <p>Results: </p>
+    <table id="minTable" >
+        <thead>
+            <th>
+            Price
+            </th>
+            <th>
+            Color
+            </th>
+        </thead>
+        <tbody id = minTableBody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <!-- Join query -->
+    <h2>Find customers who bought discounted sedans from us with a discount more than some value.</h2>
+    <p>Our customer:</p>
+    <table id="customerTable2" >
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Customer ID</th>
+            <th>Customer name</th>
+            <th>Date of Birth</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p></p>
+    <p>Sales record :</p>
+    <table id="sellsToTable2" >
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Employee ID</th>
+            <th>Customer ID</th>
+            <th>Discount</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p>You can specify what the discount amount is: </p>
+    Minimum Discount Amount: <input type="number" id="discountAmt" placeholder="Enter Minimum Discount Amount" required> <br><br>
+    <button id="discount"> Find </button> <br><br>
+    <!-- A placeholder to display the count result. -->
+    <p>Results: </p>
+    <table id="discountTable" >
+        <thead>
+            <th>
+            Customer ID
+            </th>
+            <th>
+            Customer Name
+            </th>
+        </thead>
+        <tbody id = discountTableBody>
+        </tbody>
+    </table>
+
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <!-- Nested Aggregation with GROUP BY -->
+    <h2> Find minimum prices in each weight categories for trucks with prices below average price. </h2>
+    <p>Truck table: </p>
+    <table id="truckTable2" >
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Model Name</th>
+            <th>Weight Capacity</th>
+            <th>Carbon Emission</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p></p>
+    <button id="nestedAggregation"> Find </button> <br><br>
+    <p>Results: </p>
+    <table id="nestedAggregationTable">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Price</th>
+            <th>Weight Capacity</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+    <!-- Division -->
+    <h2>Find the Name of Every Customer that has Bought from Every Salesperson</h2>
+    <p>Our sales employees: </p>
+    <table id="salespersonTable" >
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Employee ID</th>
+            <th>Salesperson SSN</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p></p>
+    <p>Our customers: </p>
+    <table id="customerTable" >
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Customer ID</th>
+            <th>Customer name</th>
+            <th>Date of Birth</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p></p>
+    <p>Sales Record: </p>
+    <table id="sellsToTable" >
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Employee ID</th>
+            <th>Customer ID</th>
+            <th>Discount</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <p></p>
+    <button id="division"> Find </button> <br><br>
+    <p>Results: </p>
+    <table id="divisionTable" >
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Customer Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <!-- ===================================================================================== -->
+    <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
+    <script src="scripts.js"></script>
+</body>
+</html>
+
+
